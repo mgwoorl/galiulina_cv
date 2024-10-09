@@ -8,7 +8,7 @@ b = np.zeros((5, 5))
 
 assert b.shape == (5, 5) and b.sum() == 0
 
-c = np.array([[[1, 1], [1, 1]], [[1, 1], [1, 1]]])
+c = np.ones((2, 2, 2))
 
 assert c.ndim == 3 and c.sum() / c.size == 1
 
@@ -26,7 +26,7 @@ fc = f[::2, 1::2]
 assert np.all(fc == np.array([[1, 3], [11, 13], [21, 23]]))
 
 g = np.ones((5, 3))
-gc = g[0:5, 0]*3
+gc = np.sum(g, axis = 1)
 
 assert np.all(gc == np.array([3., 3., 3., 3., 3.]))
 
@@ -48,7 +48,7 @@ kl = k ** l
 assert np.all(kl == np.array([1, 4, 27, 64, 625]))
 
 m = np.array([2, 2, 2, 3, 3, 3])
-mc = m[:3].size / m[:3].sum()
+mc = np.mean(m == 2)
 
 assert mc == 0.5
 
