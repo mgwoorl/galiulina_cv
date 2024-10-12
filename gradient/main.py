@@ -17,7 +17,7 @@ def gradient_linear(image):
 def diagonal_gradient(image):
     for i in range(image.shape[0]):
         for j in range(image.shape[0]):
-            v = (i + j) / 2
+            v = (i + j)/(- 2 * (size + 1))
 
             r = lerp(color1[0], color2[0], v)
             g = lerp(color1[1], color2[1], v)
