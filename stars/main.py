@@ -92,8 +92,7 @@ def find_stars(B, struct):
 
     return num_stars
 
-image = np.load("stars.npy").astype("u8")
-image_copy = image.copy()
+image = np.load("stars.npy")
 
 struct_crosses = np.array([[1, 0, 0, 0, 1],
                            [0, 1, 0, 1, 0],
@@ -107,10 +106,10 @@ struct_stars = np.array([[0, 0, 1, 0, 0],
                          [0, 0, 1, 0, 0],
                          [0, 0, 1, 0, 0]])
 
-stars = find_stars(image_copy, struct_stars)
-print(stars)
+stars = find_stars(image, struct_stars)
+print("Звезды:", stars)
 crosses = find_crosses(image, struct_crosses)
-print(crosses)
+print("Крестики:", crosses)
 
 res = stars + crosses
 
