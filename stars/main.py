@@ -80,52 +80,37 @@ def two_pass(B):
 
 import numpy as np
 
-def find_crosses(B):
-    struct = np.array([[1, 0, 0, 0, 1],
-                       [0, 1, 0, 1, 0],
-                       [0, 0, 1, 0, 0],
-                       [0, 1, 0, 1, 0],
-                       [1, 0, 0, 0, 1]])
-
-    num_crosses = 0
-
-    for i in range(2, B.shape[0] - 2):
-        for j in range(2, B.shape[1] - 2):
-            B_part = B[i - 2:i + 3, j - 2:j + 3]
-
-            if np.all(B_part == struct):
-                #print("B_part", B_part)
-                num_crosses += 1
+def find_crosses(B, struct):
+    crosses = binary_erosion(B, struct).astype("uint8")
+    num_crosses = np.unique(two_pass(crosses)).max()
 
     return num_crosses
 
-def find_stars(B):
-    struct = np.array([[0, 0, 1, 0, 1],
-                       [0, 0, 1, 0, 0],
-                       [1, 1, 1, 1, 1],
-                       [0, 0, 1, 0, 0],
-                       [0, 0, 1, 0, 0]])
-
-    num_stars = 0
-
-    for i in range(2, B.shape[0] - 2):
-        for j in range(2, B.shape[1] - 2):
-            B_part = B[i - 2:i + 3, j - 2:j + 3]
-            #print("B_part", B_part)
-
-            if np.all(B_part == struct):
-                print("B_part", B_part)
-                num_stars += 1
+def find_stars(B, struct):
+    stars = binary_erosion(B, struct).astype("uint8")
+    num_stars = np.unique(two_pass(stars)).max()
 
     return num_stars
 
-image = np.load("stars.npy").astype("int")
+image = np.load("stars.npy").astype("u8")
+image_copy = image.copy()
 
-#plt.imshow(image)
-#plt.show()
+struct_crosses = np.array([[1, 0, 0, 0, 1],
+                           [0, 1, 0, 1, 0],
+                           [0, 0, 1, 0, 0],
+                           [0, 1, 0, 1, 0],
+                           [1, 0, 0, 0, 1]])
 
-stars = find_stars(image)
-crosses = find_crosses(image)
+struct_stars = np.array([[0, 0, 1, 0, 0],
+                         [0, 0, 1, 0, 0],
+                         [1, 1, 1, 1, 1],
+                         [0, 0, 1, 0, 0],
+                         [0, 0, 1, 0, 0]])
+
+stars = find_stars(image_copy, struct_stars)
+print(stars)
+crosses = find_crosses(image, struct_crosses)
+print(crosses)
 
 res = stars + crosses
 
