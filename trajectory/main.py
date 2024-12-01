@@ -19,14 +19,14 @@ for i, image in enumerate(images):
     cnts, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     coords = []
 
-    for j in cnts:
-        (x, y), r = cv2.minEnclosingCircle(j)
-        coords.append((x, y))
+    for cnt in cnts:
+        (x, y), r = cv2.minEnclosingCircle(cnt)
+        coords.append([x, y])
 
     if i == 0:
-        trajectories["f"].append(list(coords[0]))
-        trajectories["s"].append(list(coords[1]))
-        trajectories["t"].append(list(coords[2]))
+        trajectories["f"].append(coords[0])
+        trajectories["s"].append(coords[1])
+        trajectories["t"].append(coords[2])
 
     else:
         for j in trajectories.keys():
@@ -41,7 +41,7 @@ for i, image in enumerate(images):
                     min_dist = curr_dist
                     next_point = p2
 
-            trajectory.append(list(next_point))
+            trajectory.append(next_point)
             coords.remove(next_point)
 
 for key, trajectory in trajectories.items():
