@@ -16,7 +16,6 @@ for file in orig_files:
     images.append(img)
 
 for i, image in enumerate(images):
-    print(i)
     cnts, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     coords = []
 
