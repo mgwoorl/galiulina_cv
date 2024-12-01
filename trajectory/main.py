@@ -45,7 +45,7 @@ for i, image in enumerate(images):
 
             trajectory.append(list(next_point))
 
-for trajectory in trajectories.items():
+for key, trajectory in trajectories.items():
     x_points = [point[0] for point in trajectory]
     y_points = [point[1] for point in trajectory]
 
