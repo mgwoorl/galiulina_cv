@@ -48,6 +48,7 @@ for key, trajectory in trajectories.items():
     x_points = [point[0] for point in trajectory]
     y_points = [point[1] for point in trajectory]
 
-    plt.plot(x_points, y_points)
+    plt.plot(x_points, y_points, label = key)
+    plt.legend()
 
 plt.show()
