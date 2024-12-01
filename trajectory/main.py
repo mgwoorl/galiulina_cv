@@ -35,7 +35,6 @@ for i, image in enumerate(images):
             next_point = None
             min_dist = 100000000
             last_point = trajectory[-1]
-            print("lst", last_point)
 
             for p2 in coords:
                 curr_dist = distance(last_point, p2)
@@ -44,6 +43,7 @@ for i, image in enumerate(images):
                     next_point = p2
 
             trajectory.append(list(next_point))
+            coords.remove(next_point)
 
 for key, trajectory in trajectories.items():
     x_points = [point[0] for point in trajectory]
