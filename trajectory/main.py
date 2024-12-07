@@ -1,19 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from pathlib import Path
 import cv2
 
 def distance(p1, p2):
     return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
 
-directory = Path("out")
-orig_files = list(directory.glob("*.npy"))
+dir = 'out'
 images = []
-trajectories = {"f": [], "s": [], "t": []}
 
-for file in orig_files:
-    img = np.load(file).astype("uint8")
+for i in range(100):
+    file_path = f'out/h_{i}.npy'
+    img = np.load(file_path).astype('uint8')
+
     images.append(img)
+
+trajectories = {"f": [], "s": [], "t": []}
 
 for i, image in enumerate(images):
     cnts, _ = cv2.findContours(image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
