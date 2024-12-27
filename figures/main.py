@@ -1,34 +1,69 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.ndimage import binary_closing, binary_opening, binary_dilation, binary_erosion
+from scipy.ndimage import binary_opening, binary_erosion, binary_closing, binary_dilation, label
 from skimage.measure import label
 
-def count_all_figures(B):
-    num_figures = np.unique(label(B)).max()
+struct_rect = np.array([
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1]
+])
 
-    return num_figures
+struct_right = np.array([
+    [1, 1, 1, 1, 0, 0],
+    [1, 1, 1, 1, 0, 0],
+    [1, 1, 0, 0, 0, 0],
+    [1, 1, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 0],
+    [1, 1, 1, 1, 0, 0]
+])
 
-image = np.load("ps.npy").astype("uint8")
+struct_left = np.array([
+    [0, 0, 1, 1, 1, 1],
+    [0, 0, 1, 1, 1, 1],
+    [0, 0, 0, 0, 1, 1],
+    [0, 0, 0, 0, 1, 1],
+    [0, 0, 1, 1, 1, 1],
+    [0, 0, 1, 1, 1, 1]
+])
 
-struct1 = np.array([[1, 1, 1],
-                    [1, 0, 1]])
+struct_up = np.array([
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [1, 1, 0, 0, 1, 1],
+    [1, 1, 0, 0, 1, 1],
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1]
+])
 
-struct2 = np.array([[1, 0, 1],
-                    [1, 1, 1]])
+struct_down = np.array([
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1],
+    [1, 1, 0, 0, 1, 1],
+    [1, 1, 0, 0, 1, 1],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+])
 
-struct3 = np.array([[1, 1],
-                    [1, 0],
-                    [1, 1]])
+image = (np.load("ps.npy.txt")).astype(int)
 
-struct4 = np.array([[1, 1],
-                    [0, 1],
-                    [1, 1]])
+counting = label(image)
 
-struct5 = np.array([[1, 1, 1],
-                    [1, 1, 1]])
+rects = label(binary_erosion(image, struct_rect)).max()
 
-plt.imshow(image)
-plt.show()
+right = label(binary_erosion(image, struct_right)).max()
+left = label(binary_erosion(image, struct_left)).max()
 
-res_all = count_all_figures(image)
-print("Общее кол-во фигур:", res_all)
+up_and_rects = label(binary_erosion(image, struct_up)).max()
+up = up_and_rects - rects
+
+down_and_rects = label(binary_erosion(image, struct_down)).max()
+down = down_and_rects - rects
+
+print("Прямоугольники: ", rects)
+print("Направо: ", right)
+print("Налево: ", left)
+print("Вверх: ", up)
+print("Вниз: ", down)
